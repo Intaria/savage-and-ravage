@@ -21,13 +21,12 @@ public class SRItemTagsProvider extends ItemTagsProvider {
 
 	@Override
 	protected void addTags() {
-		this.tag(ItemTags.ARROWS).add(SRItems.MISCHIEF_ARROW.get());
-		this.tag(ItemTags.PIGLIN_LOVED).add(SRItems.GRIEFER_HELMET.get(), SRItems.GRIEFER_CHESTPLATE.get(), SRItems.GRIEFER_LEGGINGS.get(), SRItems.GRIEFER_BOOTS.get(), SRItems.BLAST_PROOF_PLATING.get(), SRBlocks.BLAST_PROOF_PLATES.get().asItem(), SRBlocks.BLAST_PROOF_STAIRS.get().asItem(), SRBlocks.BLAST_PROOF_SLAB.get().asItem(), SRBlocks.BLAST_PROOF_VERTICAL_SLAB.get().asItem());
+		this.tag(ItemTags.PIGLIN_LOVED).add(SRItems.GRIEFER_HELMET.get(), SRItems.GRIEFER_CHESTPLATE.get(), SRItems.GRIEFER_LEGGINGS.get(), SRItems.GRIEFER_BOOTS.get(), SRItems.BLAST_PROOF_PLATING.get());
 		this.copy(BlockTags.SLABS, ItemTags.SLABS);
 		this.copy(BlockTags.STAIRS, ItemTags.STAIRS);
 		this.copy(BlockTags.WALLS, ItemTags.WALLS);
 
-		this.tag(SRItemTags.EXPLOSION_IMMUNE).add(SRItems.CREEPER_SPORES.get(), SRItems.GRIEFER_HELMET.get(), SRItems.GRIEFER_CHESTPLATE.get(), SRItems.GRIEFER_LEGGINGS.get(), SRItems.GRIEFER_BOOTS.get(), SRBlocks.BLAST_PROOF_PLATES.get().asItem(), SRBlocks.BLAST_PROOF_STAIRS.get().asItem(), SRBlocks.BLAST_PROOF_SLAB.get().asItem(), SRBlocks.BLAST_PROOF_VERTICAL_SLAB.get().asItem());
+		this.tag(SRItemTags.EXPLOSION_IMMUNE).add(SRItems.GRIEFER_HELMET.get(), SRItems.GRIEFER_CHESTPLATE.get(), SRItems.GRIEFER_LEGGINGS.get(), SRItems.GRIEFER_BOOTS.get());
 
 		this.copy(BlueprintBlockTags.VERTICAL_SLABS, BlueprintItemTags.VERTICAL_SLABS);
 	}

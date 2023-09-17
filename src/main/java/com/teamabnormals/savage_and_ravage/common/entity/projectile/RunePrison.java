@@ -1,6 +1,5 @@
 package com.teamabnormals.savage_and_ravage.common.entity.projectile;
 
-import com.teamabnormals.savage_and_ravage.common.block.RunedGloomyTilesBlock;
 import com.teamabnormals.savage_and_ravage.common.entity.TracksHits;
 import com.teamabnormals.savage_and_ravage.core.registry.SRBlocks;
 import com.teamabnormals.savage_and_ravage.core.registry.SREntityTypes;
@@ -59,8 +58,6 @@ public class RunePrison extends Entity {
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
 		this.setTicksTillRemove(compound.getInt("TicksTillRemove"));
-		if (compound.contains("GloomyTilePosition", 10))
-			this.setBlockPos(NbtUtils.readBlockPos(compound.getCompound("GloomyTilePosition")));
 		if (compound.hasUUID("CasterUUID"))
 			this.casterUUID = compound.getUUID("CasterUUID");
 	}
@@ -68,8 +65,6 @@ public class RunePrison extends Entity {
 	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
 		compound.putInt("TicksTillRemove", this.getTicksTillRemove());
-		if (this.getBlockPos() != null)
-			compound.put("GloomyTilePosition", NbtUtils.writeBlockPos(this.getBlockPos()));
 		if (this.casterUUID != null)
 			compound.putUUID("CasterUUID", this.casterUUID);
 	}
@@ -134,12 +129,6 @@ public class RunePrison extends Entity {
 
 		if (this.getTicksTillRemove() == 0) {
 			this.discard();
-
-			BlockPos pos = this.getBlockPos();
-			if (pos != null && this.fromTrap) {
-				if (this.level.getBlockState(pos).getBlock() instanceof RunedGloomyTilesBlock)
-					this.level.setBlockAndUpdate(pos, SRBlocks.GLOOMY_TILES.get().defaultBlockState());
-			}
 		}
 	}
 

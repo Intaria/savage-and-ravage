@@ -27,7 +27,7 @@ import org.apache.commons.compress.utils.Lists;
 import java.util.ArrayList;
 
 public class SRAdvancementModifierProvider extends AdvancementModifierProvider {
-	private static final EntityType<?>[] MOBS_TO_KILL = new EntityType[]{SREntityTypes.SKELETON_VILLAGER.get(), SREntityTypes.CREEPIE.get(), SREntityTypes.ICEOLOGER.get(), SREntityTypes.EXECUTIONER.get(), SREntityTypes.TRICKSTER.get()};
+	private static final EntityType<?>[] MOBS_TO_KILL = new EntityType[]{SREntityTypes.ICEOLOGER.get(), SREntityTypes.TRICKSTER.get()};
 
 	public SRAdvancementModifierProvider(DataGenerator generator) {
 		super(generator, SavageAndRavage.MOD_ID);

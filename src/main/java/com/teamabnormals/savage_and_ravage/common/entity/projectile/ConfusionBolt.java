@@ -126,19 +126,6 @@ public class ConfusionBolt extends ThrowableProjectile {
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
-		if (!this.level.isClientSide) {
-			BlockPos.MutableBlockPos pos = result.getBlockPos().mutable();
-			if (this.level.getBlockState(pos).getBlock() == SRBlocks.GLOOMY_TILES.get()) {
-				this.level.setBlock(pos, SRBlocks.RUNED_GLOOMY_TILES.get().defaultBlockState(), 2);
-				for (Direction direction : Direction.values()) {
-					pos.move(direction);
-					if (!this.level.getBlockState(pos).isSolidRender(this.level, pos))
-						for (int i = 0; i < 3; i++)
-							NetworkUtil.spawnParticle(SRParticleTypes.RUNE.getId().toString(), this.level.dimension(), pos.getX() + random.nextDouble(), pos.getY() + 0.25, pos.getZ() + random.nextDouble(), 0.0D, 0.0D, 0.0D);
-					pos.move(direction.getOpposite());
-				}
-			}
-		}
 	}
 
 	private void teleport(Entity entity, double x, double y, double z) {

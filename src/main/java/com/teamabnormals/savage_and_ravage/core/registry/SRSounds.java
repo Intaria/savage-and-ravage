@@ -10,12 +10,6 @@ import net.minecraftforge.registries.RegistryObject;
 public class SRSounds {
 	public static final SoundSubRegistryHelper HELPER = SavageAndRavage.REGISTRY_HELPER.getSoundSubHelper();
 
-	public static final RegistryObject<SoundEvent> ENTITY_CREEPIE_HURT = HELPER.createSoundEvent("entity.creepie.hurt");
-	public static final RegistryObject<SoundEvent> ENTITY_CREEPIE_DEATH = HELPER.createSoundEvent("entity.creepie.death");
-	public static final RegistryObject<SoundEvent> ENTITY_CREEPIE_PRIMED = HELPER.createSoundEvent("entity.creepie.primed");
-	public static final RegistryObject<SoundEvent> ENTITY_CREEPIE_CONVERT = HELPER.createSoundEvent("entity.creepie.convert");
-	public static final RegistryObject<SoundEvent> ENTITY_CREEPIE_GROW = HELPER.createSoundEvent("entity.creepie.grow");
-
 	public static final RegistryObject<SoundEvent> ENTITY_ICEOLOGER_AMBIENT = HELPER.createSoundEvent("entity.iceologer.ambient");
 	public static final RegistryObject<SoundEvent> ENTITY_ICEOLOGER_HURT = HELPER.createSoundEvent("entity.iceologer.hurt");
 	public static final RegistryObject<SoundEvent> ENTITY_ICEOLOGER_DEATH = HELPER.createSoundEvent("entity.iceologer.death");
@@ -31,7 +25,6 @@ public class SRSounds {
 	public static final RegistryObject<SoundEvent> ENTITY_TRICKSTER_LAUGH = HELPER.createSoundEvent("entity.trickster.laugh");
 
 	public static final RegistryObject<SoundEvent> ENTITY_PLAYER_CAST_SPELL = HELPER.createSoundEvent("entity.player.cast_spell");
-	public static final RegistryObject<SoundEvent> ENTITY_CREEPER_SPORES_THROW = HELPER.createSoundEvent("entity.creeper_spores.throw");
 	public static final RegistryObject<SoundEvent> GENERIC_PREPARE_ATTACK = HELPER.createSoundEvent("generic.prepare_attack");
 	public static final RegistryObject<SoundEvent> GENERIC_PUFF_OF_SMOKE = HELPER.createSoundEvent("generic.puff_of_smoke");
 

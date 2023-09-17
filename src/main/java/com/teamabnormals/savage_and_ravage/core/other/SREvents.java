@@ -7,9 +7,7 @@ import com.teamabnormals.savage_and_ravage.common.entity.OwnableMob;
 import com.teamabnormals.savage_and_ravage.common.entity.ai.goal.CelebrateTargetBlockHitGoal;
 import com.teamabnormals.savage_and_ravage.common.entity.ai.goal.ImprovedCrossbowGoal;
 import com.teamabnormals.savage_and_ravage.common.entity.decoration.BurningBanner;
-import com.teamabnormals.savage_and_ravage.common.entity.item.SporeBomb;
 import com.teamabnormals.savage_and_ravage.common.entity.monster.*;
-import com.teamabnormals.savage_and_ravage.common.entity.projectile.SporeCloud;
 import com.teamabnormals.savage_and_ravage.common.item.PottableItem;
 import com.teamabnormals.savage_and_ravage.core.SRConfig;
 import com.teamabnormals.savage_and_ravage.core.SavageAndRavage;
@@ -92,24 +90,15 @@ public class SREvents {
 		Entity entity = event.getEntity();
 		if (entity instanceof Mob mob) {
 			if (mob instanceof AbstractVillager villager) {
-				villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, SkeletonVillager.class, 8.0F, 0.6D, 0.6D));
-				villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, Griefer.class, 8.0F, 0.8D, 0.8D));
 				villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, Iceologer.class, 8.0F, 0.8D, 0.8D));
-				villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, Executioner.class, 8.0F, 0.8D, 0.8D));
 				villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, Trickster.class, 8.0F, 0.8D, 0.8D));
-				villager.goalSelector.addGoal(1, new AvoidEntityGoal<>(villager, Creepie.class, 8.0F, 0.8D, 0.8D, e -> {
-					Creepie creepie = ((Creepie) e);
-					return creepie.getOwnerId() == null || creepie.getOwner() instanceof Griefer;
-				}));
 			} else if (mob instanceof Pillager pillager) {
 				mob.goalSelector.availableGoals.stream().map(it -> it.goal).filter(it -> it instanceof RangedCrossbowAttackGoal<?>).findFirst().ifPresent(goal -> {
 					mob.goalSelector.removeGoal(goal);
 					mob.goalSelector.addGoal(3, new ImprovedCrossbowGoal<>(pillager, 1.0D, 8.0F, 5.0D));
 				});
 				mob.goalSelector.addGoal(5, new CelebrateTargetBlockHitGoal(pillager));
-			} else if (mob instanceof Cat || mob instanceof Ocelot)
-				mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, Creepie.class, false));
-			else if (mob instanceof Evoker && SRConfig.COMMON.evokersUseTotems.get())
+			} else if (mob instanceof Evoker && SRConfig.COMMON.evokersUseTotems.get())
 				mob.goalSelector.addGoal(1, new AvoidEntityGoal<>((Evoker) mob, IronGolem.class, 8.0F, 0.6D, 1.0D) {
 					@Override
 					public boolean canUse() {
@@ -123,7 +112,7 @@ public class SREvents {
 				if (mob.getHealth() > mob.getMaxHealth())
 					mob.setHealth(mob.getMaxHealth());
 			}
-			if (!SRConfig.COMMON.creeperExplosionsDestroyBlocks.get()) {
+			
 				if (mob instanceof IronGolem)
 					mob.targetSelector.availableGoals.stream().map(it -> it.goal).filter(it -> it instanceof NearestAttackableTargetGoal<?>).findFirst().ifPresent(goal -> {
 						mob.targetSelector.removeGoal(goal);
@@ -131,43 +120,11 @@ public class SREvents {
 					});
 				else if (mob.getType().is(SREntityTypeTags.CREEPERS))
 					mob.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(mob, IronGolem.class, true));
-			}
+			
 		}
 	}
 
 	private static final String POISON_TAG = SavageAndRavage.MOD_ID + "poison_potato_applied";
-
-	@SubscribeEvent
-	public static void onRightClickEntity(PlayerInteractEvent.EntityInteract event) {
-		Entity target = event.getTarget();
-		ItemStack stack = event.getItemStack();
-		if (target instanceof Creepie && stack.getItem() == Items.POISONOUS_POTATO && SRConfig.COMMON.poisonPotatoCompat.get() && ModList.get().isLoaded("quark")) {
-			Player player = event.getEntity();
-			CompoundTag persistentData = target.getPersistentData();
-			if (!persistentData.getBoolean(POISON_TAG)) {
-				if (target.level.random.nextDouble() < SRConfig.COMMON.poisonPotatoChance.get()) {
-					target.playSound(SoundEvents.GENERIC_EAT, 0.5f, 0.25f);
-					persistentData.putBoolean(POISON_TAG, true);
-					if (SRConfig.COMMON.poisonPotatoEffect.get()) {
-						((LivingEntity) target).addEffect(new MobEffectInstance(MobEffects.POISON, 200));
-					}
-				} else {
-					target.playSound(SoundEvents.GENERIC_EAT, 0.5f, 0.5f + target.level.random.nextFloat() / 2);
-				}
-				if (!player.isCreative()) stack.shrink(1);
-				event.setCancellationResult(InteractionResult.sidedSuccess(event.getLevel().isClientSide()));
-				event.setCanceled(true);
-			}
-		}
-	}
-
-	@SubscribeEvent
-	public static void onUpdateEntity(LivingTickEvent event) {
-		Entity entity = event.getEntity();
-		if (entity instanceof Creepie creepie && SRConfig.COMMON.poisonPotatoCompat.get() && ModList.get().isLoaded("quark")) {
-			if (entity.getPersistentData().getBoolean(POISON_TAG)) creepie.setGrowingAge(-24000);
-		}
-	}
 
 	@SubscribeEvent
 	public static void onLivingJump(LivingJumpEvent event) {
@@ -189,50 +146,6 @@ public class SREvents {
 		}
 	}
 
-	@SubscribeEvent
-	public static void onExplosion(ExplosionEvent.Detonate event) {
-		Level world = event.getLevel();
-		Explosion explosion = event.getExplosion();
-		LivingEntity sourceEntity = explosion.getSourceMob();
-		boolean isCreeper = sourceEntity != null && sourceEntity.getType().is(SREntityTypeTags.CREEPERS);
-		boolean isCreepie = sourceEntity != null && sourceEntity.getType() == SREntityTypes.CREEPIE.get();
-		if (isCreeper) {
-			if (!SRConfig.COMMON.creeperExplosionsDestroyBlocks.get())
-				event.getAffectedBlocks().clear();
-			if (SRConfig.COMMON.creeperExplosionsSpawnCreepies.get()) {
-				boolean isPowered = explosion.getSourceMob() instanceof Creeper creeper && creeper.isPowered();
-				SporeCloud spores = SREntityTypes.SPORE_CLOUD.get().create(world);
-				if (spores == null)
-					return;
-				spores.setSpawnCloudInstantly(true);
-				spores.creepiesAttackPlayersOnly(true);
-				if (isPowered) {
-					spores.setCharged(true);
-				}
-				spores.setCloudSize((int) (sourceEntity.getHealth() / sourceEntity.getMaxHealth()) * (isPowered ? 10 : 4));
-				spores.copyPosition(sourceEntity);
-				sourceEntity.level.addFreshEntity(spores);
-			}
-		}
-
-		if (explosion.getExploder() != null && explosion.getExploder().getType() == SREntityTypes.SPORE_BOMB.get()) {
-			for (BlockPos pos : event.getAffectedBlocks()) {
-				if (world.getBlockState(pos).getBlock() == SRBlocks.SPORE_BOMB.get()) {
-					world.removeBlock(pos, false);
-					SporeBomb sporebomb = new SporeBomb(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, explosion.getSourceMob());
-					sporebomb.setFuse((short) (world.getRandom().nextInt(sporebomb.getFuse() / 4) + sporebomb.getFuse() / 8));
-					world.addFreshEntity(sporebomb);
-				}
-			}
-		}
-
-		List<Entity> safeItems = new ArrayList<>();
-		for (Entity entity : event.getAffectedEntities())
-			if (entitySafeFromExplosion(entity, isCreeper ? !SRConfig.COMMON.creeperExplosionsDestroyBlocks.get() : isCreepie && !SRConfig.COMMON.creepieExplosionsDestroyBlocks.get()))
-				safeItems.add(entity);
-		event.getAffectedEntities().removeAll(safeItems);
-	}
-
 	public static boolean entitySafeFromExplosion(Entity entity, boolean creeperTypeNoGriefing) {
 		if (creeperTypeNoGriefing && entity.getType().is(SREntityTypeTags.CREEPER_IMMUNE))
 			return true;
@@ -241,67 +154,6 @@ public class SREvents {
 			return creeperTypeNoGriefing || stack.is(SRItemTags.EXPLOSION_IMMUNE);
 		}
 		return false;
-	}
-
-	@SubscribeEvent
-	public static void onAttackEntity(AttackEntityEvent event) {
-		Player player = event.getEntity();
-		Entity target = event.getTarget();
-		Level world = player.level;
-		if (target instanceof LivingEntity) {
-			ItemStack mainHandStack = player.getMainHandItem();
-			if (mainHandStack.getItem() == SRItems.CLEAVER_OF_BEHEADING.get()) {
-				float attackDamage = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE);
-				float knockback = (float) player.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
-				knockback += EnchantmentHelper.getKnockbackBonus(player);
-				float enchantDamageBonus = EnchantmentHelper.getDamageBonus(player.getMainHandItem(), ((LivingEntity) target).getMobType());
-				float attackStrength = player.getAttackStrengthScale(0.5F);
-				attackDamage = attackDamage * (0.2F + attackStrength * attackStrength * 0.8F);
-				enchantDamageBonus = enchantDamageBonus * attackStrength;
-				if ((attackDamage > 0.0F || enchantDamageBonus > 0.0F) && attackStrength > 0.9F) {
-					if (!player.isSprinting() && player.isOnGround() && (player.walkDist - player.walkDistO) < (double) player.getSpeed()) {
-						boolean shouldCrit = player.fallDistance > 0.0F && !player.isOnGround() && !player.onClimbable() && !player.isInWater() && !player.hasEffect(MobEffects.BLINDNESS) && !player.isPassenger();
-						if (ForgeHooks.getCriticalHit(player, target, shouldCrit, shouldCrit ? 1.5F : 1.0F) == null) {
-							target.getPersistentData().putBoolean(NO_KNOCKBACK_KEY, true);
-							AABB targetBox = target.getBoundingBox().inflate(1.5D, 0.25D, 1.5D);
-							AABB shockwaveBox = new AABB(targetBox.minX, targetBox.minY, targetBox.minZ, targetBox.maxX, targetBox.minY + 3.25D, targetBox.maxZ);
-							for (LivingEntity pushed : world.getEntitiesOfClass(LivingEntity.class, shockwaveBox)) {
-								if (pushed != player && pushed != target && !player.isAlliedTo(pushed) && (!(pushed instanceof ArmorStand) || !((ArmorStand) pushed).isMarker())) {
-									pushed.knockback(0.4F + (knockback * 0.5F), Mth.sin(player.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(player.getYRot() * ((float) Math.PI / 180F)));
-									if (pushed.isAffectedByPotions() && !pushed.hasEffect(MobEffects.MOVEMENT_SLOWDOWN))
-										pushed.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
-								}
-							}
-							BlockPos.MutableBlockPos checkingPos = new BlockPos.MutableBlockPos();
-							RandomSource random = world.getRandom();
-							if (!world.isClientSide) {
-								for (int i = 0; i < 100; i++) {
-									double x = shockwaveBox.minX + (random.nextDouble() * (shockwaveBox.maxX - shockwaveBox.minX));
-									double z = shockwaveBox.minZ + (random.nextDouble() * (shockwaveBox.maxZ - shockwaveBox.minZ));
-									int minY = Mth.floor(shockwaveBox.minY);
-									for (int y = minY; y < Mth.floor(shockwaveBox.maxY); y++) {
-										checkingPos.set(Mth.floor(x), Mth.floor(y), Mth.floor(z));
-										if (!isEmptySpace(world, checkingPos)) {
-											checkingPos.move(Direction.UP);
-											if (isEmptySpace(world, checkingPos)) {
-												checkingPos.move(Direction.DOWN);
-												BlockState state = world.getBlockState(checkingPos);
-												((ServerLevel) world).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state).setPos(checkingPos), x, y + state.getShape(world, checkingPos).max(Direction.Axis.Y), z, 0, 0.0D, 0.0D, 0.0D, 0.15D);
-												break;
-											}
-										}
-									}
-								}
-								double xAngle = -Mth.sin(player.getYRot() * ((float) Math.PI / 180F));
-								double zAngle = Mth.cos(player.getYRot() * ((float) Math.PI / 180F));
-								((ServerLevel) world).sendParticles(SRParticleTypes.CLEAVER_SWEEP.get(), player.getX() + xAngle, player.getY(0.5D), player.getZ() + zAngle, 0, xAngle, 0.0D, zAngle, 0.0D);
-							}
-							world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, player.getSoundSource(), 1.0F, 1.0F);
-						}
-					}
-				}
-			}
-		}
 	}
 
 	public static boolean isEmptySpace(BlockGetter world, BlockPos pos) {
@@ -349,16 +201,6 @@ public class SREvents {
 	public static void onLivingDamageDelayed(LivingDamageEvent event) {
 		LivingEntity target = event.getEntity();
 		Entity attacker = event.getSource().getEntity();
-		if (attacker instanceof LivingEntity && ((LivingEntity) attacker).getMainHandItem().getItem() == SRItems.CLEAVER_OF_BEHEADING.get()) {
-			if (target instanceof Player) {
-				Player targetPlayer = (Player) event.getEntity();
-				if (targetPlayer != null && targetPlayer.getHealth() - event.getAmount() <= 0) {
-					ItemStack stack = new ItemStack(Items.PLAYER_HEAD);
-					stack.addTagElement("SkullOwner", NbtUtils.writeGameProfile(new CompoundTag(), targetPlayer.getGameProfile()));
-					target.spawnAtLocation(stack);
-				}
-			}
-		}
 		if (target instanceof Evoker && SRConfig.COMMON.evokersUseTotems.get()) {
 			IDataManager data = (IDataManager) target;
 			if (target.getHealth() - event.getAmount() <= 0 && event.getSource().getDirectEntity() instanceof Projectile) {
@@ -388,27 +230,6 @@ public class SREvents {
 							TrackedDataManager.INSTANCE.setValue(crossbowOwner, SRDataProcessors.TARGET_HIT, true);
 						data.setValue(SRDataProcessors.CROSSBOW_OWNER, Optional.empty());
 					}
-				}
-			}
-		}
-	}
-
-	@SubscribeEvent
-	public static void onInteractWithEntity(PlayerInteractEvent.EntityInteract event) {
-		ItemStack stack = event.getItemStack();
-		Entity target = event.getTarget();
-		if (target.getType().is(SREntityTypeTags.CREEPERS) || target.getType() == SREntityTypes.CREEPIE.get()) {
-			if (stack.getItem() == Items.CREEPER_SPAWN_EGG) {
-				Level world = event.getLevel();
-				Creepie creepie = SREntityTypes.CREEPIE.get().create(world);
-				if (creepie != null) {
-					creepie.copyPosition(target);
-					if (stack.hasCustomHoverName()) creepie.setCustomName(stack.getHoverName());
-					if (!event.getEntity().isCreative()) stack.shrink(1);
-					creepie.attackPlayersOnly = true;
-					world.addFreshEntity(creepie);
-					event.setCancellationResult(InteractionResult.sidedSuccess(world.isClientSide()));
-					event.setCanceled(true);
 				}
 			}
 		}
@@ -478,15 +299,6 @@ public class SREvents {
 				if (celebrationTime > 0)
 					data.setValue(SRDataProcessors.CELEBRATION_TIME, celebrationTime - 1);
 			}
-			boolean canBeInvisible = maskCanMakeInvisible(entity);
-			boolean invisibleDueToMask = data.getValue(SRDataProcessors.INVISIBLE_DUE_TO_MASK);
-			boolean maskStateChanged = canBeInvisible != invisibleDueToMask;
-			if (maskStateChanged) {
-				data.setValue(SRDataProcessors.INVISIBLE_DUE_TO_MASK, canBeInvisible);
-				spawnMaskParticles(world, entity.getBoundingBox(), 3);
-			}
-			if (maskStateChanged || (canBeInvisible && !entity.isInvisible()))
-				entity.setInvisible(canBeInvisible || entity.hasEffect(MobEffects.INVISIBILITY));
 		}
 		if (entity instanceof Evoker) {
 			int shieldTime = data.getValue(SRDataProcessors.TOTEM_SHIELD_TIME);
@@ -513,12 +325,6 @@ public class SREvents {
 			event.modifyVisibility(1 / armorCover); //potentially slightly inaccurate
 			event.modifyVisibility(0.1);
 		}
-	}
-
-	private static boolean maskCanMakeInvisible(LivingEntity entity) {
-		if (entity.getItemBySlot(EquipmentSlot.HEAD).getItem() == SRItems.MASK_OF_DISHONESTY.get())
-			return entity.isCrouching();
-		return false;
 	}
 
 	public static void spawnMaskParticles(Level world, AABB box, int loops) {

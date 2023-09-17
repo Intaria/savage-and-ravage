@@ -4,34 +4,6 @@
       "type": "criteria",
       "config": {
         "criteria": {
-          "savage_and_ravage:creepie": {
-            "conditions": {
-              "entity": [
-                {
-                  "condition": "minecraft:entity_properties",
-                  "entity": "this",
-                  "predicate": {
-                    "type": "savage_and_ravage:creepie"
-                  }
-                }
-              ]
-            },
-            "trigger": "minecraft:player_killed_entity"
-          },
-          "savage_and_ravage:executioner": {
-            "conditions": {
-              "entity": [
-                {
-                  "condition": "minecraft:entity_properties",
-                  "entity": "this",
-                  "predicate": {
-                    "type": "savage_and_ravage:executioner"
-                  }
-                }
-              ]
-            },
-            "trigger": "minecraft:player_killed_entity"
-          },
           "savage_and_ravage:iceologer": {
             "conditions": {
               "entity": [
@@ -40,20 +12,6 @@
                   "entity": "this",
                   "predicate": {
                     "type": "savage_and_ravage:iceologer"
-                  }
-                }
-              ]
-            },
-            "trigger": "minecraft:player_killed_entity"
-          },
-          "savage_and_ravage:skeleton_villager": {
-            "conditions": {
-              "entity": [
-                {
-                  "condition": "minecraft:entity_properties",
-                  "entity": "this",
-                  "predicate": {
-                    "type": "savage_and_ravage:skeleton_villager"
                   }
                 }
               ]
@@ -77,16 +35,7 @@
         },
         "requirements": [
           [
-            "savage_and_ravage:skeleton_villager"
-          ],
-          [
-            "savage_and_ravage:creepie"
-          ],
-          [
             "savage_and_ravage:iceologer"
-          ],
-          [
-            "savage_and_ravage:executioner"
           ],
           [
             "savage_and_ravage:trickster"

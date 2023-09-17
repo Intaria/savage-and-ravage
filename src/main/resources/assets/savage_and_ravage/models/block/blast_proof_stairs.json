@@ -1,8 +1,0 @@
-{
-    "parent": "block/stairs",
-    "textures": {
-        "bottom": "savage_and_ravage:block/blast_proof_plates",
-        "top": "savage_and_ravage:block/blast_proof_plates",
-        "side": "savage_and_ravage:block/blast_proof_plates"
-    }
-}

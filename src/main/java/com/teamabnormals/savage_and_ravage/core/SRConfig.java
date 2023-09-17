@@ -9,11 +9,6 @@ import org.apache.commons.lang3.tuple.Pair;
 public class SRConfig {
 
 	public static class Common {
-		public final BooleanValue creeperExplosionsDestroyBlocks;
-		public final BooleanValue creeperExplosionsSpawnCreepies;
-		@ConfigKey("creepers_drop_spores_after_explosion_death")
-		public final BooleanValue creepersDropSporesAfterExplosionDeath;
-		public final BooleanValue creepieExplosionsDestroyBlocks;
 		public final BooleanValue evokersUseTotems;
 		public final BooleanValue reducedVexHealth;
 		@ConfigKey("no_bad_omen_on_death")
@@ -23,13 +18,6 @@ public class SRConfig {
 		public final BooleanValue poisonPotatoEffect;
 
 		public Common(ForgeConfigSpec.Builder builder) {
-			builder.push("mobs");
-			builder.push("creepers");
-			creeperExplosionsDestroyBlocks = builder.define("Creeper explosions destroy blocks", true);
-			creeperExplosionsSpawnCreepies = builder.define("Creeper explosions spawn creepies", false);
-			creepersDropSporesAfterExplosionDeath = builder.define("Creepers drop Creeper Spores after they die from an explosion", true);
-			creepieExplosionsDestroyBlocks = builder.define("Creepie explosions destroy blocks", false);
-			builder.pop();
 			builder.push("illagers");
 			noBadOmenOnDeath = builder
 					.comment("Illagers with banners will no longer give Bad Omen when you kill them", "Instead, you will have to place and burn the banner that they drop with flint and steel or a fire charge")
@@ -52,14 +40,7 @@ public class SRConfig {
 	}
 
 	public static class Client {
-		public final BooleanValue creepieSprout;
-
 		public Client(ForgeConfigSpec.Builder builder) {
-			builder.push("mobs");
-			builder.push("creepers");
-			this.creepieSprout = builder.define("Creepies have a sprout on their head", true);
-			builder.pop();
-			builder.pop();
 		}
 	}
 

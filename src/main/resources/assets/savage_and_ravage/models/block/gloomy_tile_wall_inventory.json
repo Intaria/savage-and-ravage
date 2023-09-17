@@ -1,6 +1,0 @@
-{
-    "parent": "block/wall_inventory",
-    "textures": {
-        "wall": "savage_and_ravage:block/gloomy_tiles"
-    }
-}

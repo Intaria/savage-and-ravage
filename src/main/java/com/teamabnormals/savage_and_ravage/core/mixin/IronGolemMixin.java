@@ -28,18 +28,11 @@ public abstract class IronGolemMixin extends AbstractGolem {
 
 	@Inject(at = @At("HEAD"), method = "doPush", cancellable = true)
 	public void collideWithEntity(Entity entity, CallbackInfo ci) {
-		if (SRConfig.COMMON.creeperExplosionsDestroyBlocks.get()) {
-			if (entity instanceof Enemy && this.getRandom().nextInt(20) == 0) {
-				this.setTarget((LivingEntity) entity);
-			}
-			super.doPush(entity);
-			ci.cancel();
-		}
 	}
 
 	@Inject(at = @At("RETURN"), method = "canAttackType", cancellable = true)
 	public void canAttack(EntityType<?> type, CallbackInfoReturnable<Boolean> cir) {
-		if ((this.isPlayerCreated() && type == EntityType.PLAYER) || (SRConfig.COMMON.creeperExplosionsDestroyBlocks.get() && type.is(SREntityTypeTags.CREEPERS))) {
+		if ((this.isPlayerCreated() && type == EntityType.PLAYER)) {
 			cir.setReturnValue(false);
 		} else {
 			cir.setReturnValue(super.canAttackType(type));

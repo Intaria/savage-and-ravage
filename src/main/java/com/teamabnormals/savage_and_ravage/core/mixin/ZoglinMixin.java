@@ -14,7 +14,7 @@ public abstract class ZoglinMixin {
 
 	@Inject(at = @At("RETURN"), method = "isTargetable", cancellable = true)
 	private void isTargetable(LivingEntity entity, CallbackInfoReturnable<Boolean> ci) {
-		if (!SRConfig.COMMON.creeperExplosionsDestroyBlocks.get() && entity.getType().is(SREntityTypeTags.CREEPERS))
+		if ( entity.getType().is(SREntityTypeTags.CREEPERS))
 			ci.setReturnValue(true);
 	}
 }

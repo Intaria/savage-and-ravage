@@ -17,10 +17,8 @@ public class SREntityTypeTagsProvider extends EntityTypeTagsProvider {
 
 	@Override
 	protected void addTags() {
-		this.tag(EntityTypeTags.ARROWS).add(SREntityTypes.MISCHIEF_ARROW.get());
-		this.tag(EntityTypeTags.IMPACT_PROJECTILES).add(SREntityTypes.SPORE_CLOUD.get(), SREntityTypes.CONFUSION_BOLT.get());
-		this.tag(EntityTypeTags.RAIDERS).add(SREntityTypes.GRIEFER.get(), SREntityTypes.EXECUTIONER.get(), SREntityTypes.ICEOLOGER.get(), SREntityTypes.TRICKSTER.get());
-		this.tag(EntityTypeTags.SKELETONS).add(SREntityTypes.SKELETON_VILLAGER.get());
+		this.tag(EntityTypeTags.IMPACT_PROJECTILES).add(SREntityTypes.CONFUSION_BOLT.get());
+		this.tag(EntityTypeTags.RAIDERS).add(SREntityTypes.ICEOLOGER.get(), SREntityTypes.TRICKSTER.get());
 		this.tag(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES).add(SREntityTypes.ICEOLOGER.get());
 
 		this.tag(SREntityTypeTags.CREEPER_IMMUNE).add(EntityType.PAINTING, EntityType.ITEM_FRAME, EntityType.GLOW_ITEM_FRAME, EntityType.FALLING_BLOCK, EntityType.LEASH_KNOT, EntityType.ARMOR_STAND);

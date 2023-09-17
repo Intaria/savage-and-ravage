@@ -7,11 +7,7 @@ import net.minecraft.world.level.biome.Biome;
 
 public class SRBiomeTags {
 	public static final TagKey<Biome> HAS_ICEOLOGER = biomeTag("has_monster/iceologer");
-	public static final TagKey<Biome> HAS_SKELETON_VILLAGER = biomeTag("has_monster/skeleton_villager");
-	public static final TagKey<Biome> HAS_COMMON_SKELETON_VILLAGER = biomeTag("has_monster/skeleton_villager/common");
-	public static final TagKey<Biome> HAS_RARE_SKELETON_VILLAGER = biomeTag("has_monster/skeleton_villager/rare");
-	public static final TagKey<Biome> HAS_WEIRD_SKELETON_VILLAGER = biomeTag("has_monster/skeleton_villager/weird");
-
+	
 	private static TagKey<Biome> biomeTag(String name) {
 		return TagUtil.biomeTag(SavageAndRavage.MOD_ID, name);
 	}

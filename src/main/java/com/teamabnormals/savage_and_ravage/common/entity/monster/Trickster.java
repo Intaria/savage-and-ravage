@@ -3,7 +3,6 @@ package com.teamabnormals.savage_and_ravage.common.entity.monster;
 import com.teamabnormals.blueprint.common.world.storage.tracking.IDataManager;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import com.teamabnormals.blueprint.core.util.NetworkUtil;
-import com.teamabnormals.savage_and_ravage.common.block.RunedGloomyTilesBlock;
 import com.teamabnormals.savage_and_ravage.common.entity.TracksHits;
 import com.teamabnormals.savage_and_ravage.common.entity.projectile.ConfusionBolt;
 import com.teamabnormals.savage_and_ravage.common.entity.projectile.RunePrison;
@@ -212,24 +211,6 @@ public class Trickster extends SpellcasterIllager implements TracksHits {
 					this.level.playSound(null, oldPos, SRSounds.ENTITY_TRICKSTER_LAUGH.get(), SoundSource.HOSTILE, 1.0F, 1.0F);
 					ConfusionBolt.spawnGaussianParticles(this.level, this.random, oldBox, SREvents.POOF_KEY, 50);
 					ConfusionBolt.spawnGaussianParticles(this.level, this.random, this.getBoundingBox().inflate(0.5D), SREvents.POOF_KEY, 50);
-					if (ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
-						BlockPos.MutableBlockPos searchPos = new BlockPos.MutableBlockPos();
-						for (int x = oldPos.getX() - 2; x <= oldPos.getX() + 2; x++) {
-							for (int y = oldPos.getY() - 2; y <= oldPos.getY() + 2; y++) {
-								for (int z = oldPos.getZ() - 2; z <= oldPos.getZ() + 2; z++) {
-									searchPos.set(x, y, z);
-									if (this.level.getBlockState(searchPos).getBlock() == SRBlocks.GLOOMY_TILES.get()) {
-										this.level.setBlock(searchPos, SRBlocks.RUNED_GLOOMY_TILES.get().defaultBlockState(), 2);
-										searchPos.move(Direction.UP);
-										if (!this.level.isClientSide && !this.level.getBlockState(searchPos).isSolidRender(this.level, searchPos)) {
-											for (int i = 0; i < 3; i++)
-												NetworkUtil.spawnParticle(SRParticleTypes.RUNE.getId().toString(), this.level.dimension(), x + random.nextDouble(), y + 1.25, z + random.nextDouble(), 0.0D, 0.0D, 0.0D);
-										}
-									}
-								}
-							}
-						}
-					}
 				}
 				return successful;
 			}
@@ -296,12 +277,6 @@ public class Trickster extends SpellcasterIllager implements TracksHits {
 	@Nullable
 	@Override
 	public void onTrackedHit(Entity hitter, Entity hit) {
-		if (RunedGloomyTilesBlock.shouldTrigger(hit, false)) {
-			if (trackedSpellEntities.contains(hitter)) {
-				this.level.playSound(null, this.blockPosition(), SRSounds.ENTITY_TRICKSTER_LAUGH.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
-				trackedSpellEntities.remove(hitter);
-			}
-		}
 	}
 
 	class CreatePrisonGoal extends SpellcasterUseSpellGoal {

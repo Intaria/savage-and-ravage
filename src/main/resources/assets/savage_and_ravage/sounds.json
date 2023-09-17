@@ -1,37 +1,4 @@
 {
-  "entity.creepie.hurt": {
-    "sounds": [
-      "savage_and_ravage:mob/creepie/hurt1",
-      "savage_and_ravage:mob/creepie/hurt2",
-      "savage_and_ravage:mob/creepie/hurt3",
-      "savage_and_ravage:mob/creepie/hurt4"
-    ],
-    "subtitle": "subtitles.savage_and_ravage.entity.creepie.hurt"
-  },
-  "entity.creepie.death": {
-    "sounds": [
-      "savage_and_ravage:mob/creepie/death"
-    ],
-    "subtitle": "subtitles.savage_and_ravage.entity.creepie.death"
-  },
-  "entity.creepie.primed": {
-    "sounds": [
-      "savage_and_ravage:mob/creepie/fuse"
-    ],
-    "subtitle": "subtitles.savage_and_ravage.entity.creepie.fuse"
-  },
-  "entity.creepie.convert": {
-    "sounds": [
-      "mob/zombie/remedy"
-    ],
-    "subtitle": "subtitles.savage_and_ravage.entity.creepie.convert"
-  },
-  "entity.creepie.grow": {
-    "sounds": [
-      "mob/zombie/infect"
-    ],
-    "subtitle": "subtitles.savage_and_ravage.entity.creepie.grow"
-  },
   "entity.iceologer.ambient": {
     "sounds": [
       "savage_and_ravage:mob/iceologer/idle1",
@@ -121,12 +88,6 @@
       "mob/evocation_illager/cast2"
     ],
     "subtitle": "subtitles.savage_and_ravage.entity.player.cast_spell"
-  },
-  "entity.creeper_spores.throw": {
-    "sounds": [
-      "random/bow"
-    ],
-    "subtitle": "subtitles.savage_and_ravage.entity.creeper_spores.throw"
   },
   "generic.prepare_attack": {
     "sounds": [
